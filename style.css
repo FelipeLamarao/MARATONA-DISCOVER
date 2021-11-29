@@ -10,6 +10,10 @@
     box-sizing: border-box;   
 }
 
+html{
+    font-size: 93.75%;
+}
+
 body{
     background: #f0f2f5;
     font-family:'Poppins',sans-serif;
@@ -41,6 +45,22 @@ h2{
     margin-bottom:0.8rem;   
     font-weight: normal;
 }
+
+/* Links & Buttons  ==================================================*/
+a{
+    color: #2d4a22;
+    text-decoration: none;
+}
+
+a:hover{
+    color: #12a454
+}
+
+.button.new{
+    display: inline-block;
+    margin-bottom: .8rem;
+}
+
 
 
 /* Header ========================================== */
@@ -102,11 +122,16 @@ header{
 
 #transaction{
     width: 100%;
+    display:block;
+    overflow-x: auto;
 }
 
-#data-table{
+#data-table{+    
     width: 100%;
     border-spacing: 0 0.5rem;
+    color: #969cb3;
+
+    overflow-x: auto;
 }
 
 table th {
@@ -127,6 +152,11 @@ table td {
 table thead tr th:first-child , 
 table tbody tr td:first-child{
     border-radius: 0.25rem 0 0 0.25rem;
+}
+
+table thead tr th:last-child , 
+table tbody tr td:last-child{
+    border-radius: 0 0.25rem 0.25rem 0 ;
 }
 
 table tbody tr{
@@ -161,4 +191,39 @@ footer{
     color: var(--dark-blue);
     opacity: 0.5;
     
+}
+
+
+/* Media ============================================*/
+@media(min-width:800px){
+    html{
+        font-size:87.5%
+    }
+
+    #balance{
+        display: grid;
+        grid-template-columns: repeat(3,1fr);
+        gap: 2rem;
+    }
+}
+
+/* Modal ============================================*/
+.modal-overlay{
+    width: 100%;
+    height: 100%;
+
+    background-color: rgba(0,0,0,0.7);
+
+    position: fixed;
+    top: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.modal{
+    background: #f0f2f5;
+    padding: 2.4rem;
 }
