@@ -15,7 +15,7 @@ const Modal = {
 // objeto aqui no javascript
 // e jogar no meu html
 
-const transaction = [
+const transactions = [
     {  
         id: 1, 
         description: 'Luz',
@@ -31,8 +31,14 @@ const transaction = [
     { 
         id: 3, 
         description: 'Internet',
-        amount: -20000,
+        amount:   -20000,
         date: '23/01/2021'        
+    },
+    { 
+        id: 4, 
+        description: 'App',
+        amount:   20000,
+        date: '30/01/2021'        
     },
 ]
 
@@ -54,15 +60,49 @@ const Transaction = {
 }
 
 
+// variavel que recebe minhas transactions
+
 const DOM = {
-    innerHTMLTransaction()  {
-        const html = `
-        <tr>
-            <td class="description">Aluguel</td>
-            <td class="expense">- R$ 1.500,00</td>
-            <td class="date">26/01/2021</td>
-         </tr>      
+    
+    transactionsContainer : document.querySelector('#data-table tbody'), // container que armazena o 'tr' e indica onde sera feita a alteração
+    
+    addTransaction(transaction, index){
+         
         
-        `
+        const tr = document.createElement('tr');
+        tr.innerHTML = this.innerHTMLTransaction(transaction);        
+
+        DOM.transactionsContainer.appendChild(tr) // container filho de tr .. o elemento criado
+        
+    },
+
+    // OBJETO QUE AFETA DIRETAMEMENTE O HTML
+    innerHTMLTransaction(transaction) {
+        const CSSclass =  transaction.amount > 0 ? "income" : "expense"
+
+        //const amount = Utils.formatCurrency(transaction.amount) 
+        
+        const html = `
+     
+            <td class="description">${transaction.description}</td>
+            <td class="${CSSclass}">${transaction.amount}</td>
+            <td class="date">${transaction.date}</td>
+            <td>
+                <img src="./assets/assets/minus.svg" alt="Remover Transação"> 
+            </td>
+ 
+       `
+
+       return html
     }
 }
+
+//const Utils = {
+//    formatCurrency(value){
+//        const signal = number(value) < 0 ? "-" : ""    
+//    }
+//}
+
+transactions.forEach(function(transaction){
+    DOM.addTransaction(transaction) 
+})
