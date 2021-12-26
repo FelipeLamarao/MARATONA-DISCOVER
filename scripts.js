@@ -19,7 +19,7 @@ const transactions = [
     {  
         id: 1, 
         description: 'Luz',
-        amount: -50000,
+        amount:-5000,
         date: '23/01/2021'        
     },
     { 
@@ -27,11 +27,11 @@ const transactions = [
         description: 'Website',
         amount: 500000,
         date: '23/01/2021'        
-    },
+    },  
     { 
         id: 3, 
         description: 'Internet',
-        amount:   -20000,
+        amount:-20000,
         date: '23/01/2021'        
     },
     { 
@@ -49,16 +49,28 @@ const transactions = [
 
 const Transaction = {
     incomes(){
-        // somar as entradas
+        //pegar todas as  transacoes , para cada transacao, se ela for maior que zero somar a uma variavel e retornar a variavel      
+        let income = 0;
+        transactions.forEach(t =>{
+            if (t.amount > 0){
+                income += t.amount;
+            }
+        })        
+        return income
     },
     expenses(){
-        //somar as saidas
+        let expense = 0;
+        transactions.forEach(t =>{
+            if (t.amount < 0){
+                expense += t.amount;
+            }
+        })        
+        return expense
     },
     total(){
-        // entradas - saidas
+        return Transaction.incomes() + Transaction.expenses()
     }
 }
-
 
 // variavel que recebe minhas transactions
 
@@ -66,8 +78,8 @@ const DOM = {
     
     transactionsContainer : document.querySelector('#data-table tbody'), // container que armazena o 'tr' e indica onde sera feita a alteração
     
-    addTransaction(transaction, index){
-         
+    // adiciona as transaçoes ==============================
+    addTransaction(transaction, index){         
         
         const tr = document.createElement('tr');
         tr.innerHTML = this.innerHTMLTransaction(transaction);        
@@ -76,16 +88,18 @@ const DOM = {
         
     },
 
-    // OBJETO QUE AFETA DIRETAMEMENTE O HTML
+
+
+    // OBJETO QUE AFETA DIRETAMEMENTE O HTML ==============================
     innerHTMLTransaction(transaction) {
         const CSSclass =  transaction.amount > 0 ? "income" : "expense"
 
-        //const amount = Utils.formatCurrency(transaction.amount) 
+        const amount = Utils.formatCurrency(transaction.amount)  //altera o valor da transaction - ele recebe o Utils.formatCurrency 
         
         const html = `
      
             <td class="description">${transaction.description}</td>
-            <td class="${CSSclass}">${transaction.amount}</td>
+            <td class="${CSSclass}">${amount}</td>
             <td class="date">${transaction.date}</td>
             <td>
                 <img src="./assets/assets/minus.svg" alt="Remover Transação"> 
@@ -94,15 +108,48 @@ const DOM = {
        `
 
        return html
+    }, 
+
+
+
+    //Atualiza os valores de transaçoes dos cards =============================
+    updateBalance(){
+        document.getElementById('incomesDisplay')
+        .innerHTML = Utils.formatCurrency(Transaction.incomes())
+        document.getElementById('expenseDisplay')
+        .innerHTML = Utils.formatCurrency(Transaction.expenses())
+        document.getElementById('totalDisplay')
+        .innerHTML = Utils.formatCurrency(Transaction.total())
     }
 }
 
-//const Utils = {
-//    formatCurrency(value){
-//        const signal = number(value) < 0 ? "-" : ""    
-//    }
-//}
+
+
+//converte os valores 
+const Utils = {
+    formatCurrency(value){
+        const signal = Number(value) < 0 ? "-" : "" // verifica se o valor for maior o signal e + se nao for sera negativo - 
+
+        value = String(value).replace(/\D/g, "")
+     
+        value = Number(value ) / 100
+
+        value = value.toLocaleString("pt-BR",{
+            style : "currency",
+            currency: "BRL"
+        })
+
+        return signal + value
+    }
+}
+
+
+
+
+// CHAMADAS DE OBJETOS 
 
 transactions.forEach(function(transaction){
     DOM.addTransaction(transaction) 
 })
+
+DOM.updateBalance()
