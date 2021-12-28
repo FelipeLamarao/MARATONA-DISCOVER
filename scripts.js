@@ -48,25 +48,37 @@ const transactions = [
 // assim, eu terei o total
 
 const Transaction = {
+    all : transactions,
+
+    add(transaction){
+        Transaction.all.push(transaction)
+
+        App.reload()
+    },
+
+
     incomes(){
         //pegar todas as  transacoes , para cada transacao, se ela for maior que zero somar a uma variavel e retornar a variavel      
         let income = 0;
-        transactions.forEach(t =>{
+        Transaction.all.forEach(t =>{
             if (t.amount > 0){
                 income += t.amount;
             }
         })        
         return income
     },
+
     expenses(){
         let expense = 0;
-        transactions.forEach(t =>{
+        Transaction.all.forEach(t =>{
             if (t.amount < 0){
                 expense += t.amount;
             }
         })        
         return expense
     },
+
+
     total(){
         return Transaction.incomes() + Transaction.expenses()
     }
@@ -120,6 +132,10 @@ const DOM = {
         .innerHTML = Utils.formatCurrency(Transaction.expenses())
         document.getElementById('totalDisplay')
         .innerHTML = Utils.formatCurrency(Transaction.total())
+    },
+
+    clearTransactions(){
+       DOM.transactionsContainer.innerHTML = ""
     }
 }
 
@@ -143,13 +159,30 @@ const Utils = {
     }
 }
 
+const App = {
+    init(){
 
+        Transaction.all.forEach(transaction => {
+            DOM.addTransaction(transaction) 
+        })
+        
+        DOM.updateBalance()
+    },
+
+    reload(){
+        DOM.clearTransactions()
+        App.init()
+    },
+}
 
 
 // CHAMADAS DE OBJETOS 
 
-transactions.forEach(function(transaction){
-    DOM.addTransaction(transaction) 
-})
+App.init()
 
-DOM.updateBalance()
+Transaction.add({
+    id: 39,
+    description : 'Alo',
+    amount : 200,
+    date : '23/01/2021'
+})
