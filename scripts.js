@@ -17,25 +17,25 @@ const Modal = {
 
 const transactions = [
     {  
-        id: 1, 
+
         description: 'Luz',
         amount:-5000,
         date: '23/01/2021'        
     },
     { 
-        id: 2, 
+        
         description: 'Website',
         amount: 500000,
         date: '23/01/2021'        
     },  
     { 
-        id: 3, 
+      
         description: 'Internet',
         amount:-20000,
         date: '23/01/2021'        
     },
     { 
-        id: 4, 
+        
         description: 'App',
         amount:   20000,
         date: '30/01/2021'        
@@ -56,6 +56,11 @@ const Transaction = {
         App.reload()
     },
 
+    remove(index){
+        Transaction.all.splice(index, 1)
+
+        App.reload()
+    },
 
     incomes(){
         //pegar todas as  transacoes , para cada transacao, se ela for maior que zero somar a uma variavel e retornar a variavel      
@@ -177,14 +182,17 @@ const App = {
     },
 }
 
+const Form = {
+    submit(event){
+        event.preventDefault()
+    }
+}
 
-// CHAMADAS DE OBJETOS 
+
+
+// CHAMADAS DE OBJETOS ======================================
 
 App.init()
 
-Transaction.add({
-    id: 39,
-    description : 'Alo',
-    amount : 200,
-    date : '23/01/2021'
-})
+Transaction.remove(3)
+
