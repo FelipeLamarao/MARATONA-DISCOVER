@@ -96,15 +96,14 @@ const DOM = {
     transactionsContainer : document.querySelector('#data-table tbody'), // container que armazena o 'tr' e indica onde sera feita a alteração
     
     // adiciona as transaçoes ==============================
-    addTransaction(transaction, index){         
-        
+    addTransaction(transaction, index){      
         const tr = document.createElement('tr');
-        tr.innerHTML = this.innerHTMLTransaction(transaction);        
-
+        tr.innerHTML = DOM.innerHTMLTransaction(transaction,index);     
+        tr.dataset.index = index
         DOM.transactionsContainer.appendChild(tr) // container filho de tr .. o elemento criado
         
     },
-
+    
 
 
     // OBJETO QUE AFETA DIRETAMEMENTE O HTML ==============================
@@ -119,7 +118,7 @@ const DOM = {
             <td class="${CSSclass}">${amount}</td>
             <td class="date">${transaction.date}</td>
             <td>
-                <img src="./assets/assets/minus.svg" alt="Remover Transação"> 
+                <img onclick=Transaction.remove(${index}) src="./assets/assets/minus.svg" alt="Remover Transação"> 
             </td>
  
        `
@@ -143,8 +142,6 @@ const DOM = {
        DOM.transactionsContainer.innerHTML = ""
     }
 }
-
-
 
 //converte os valores 
 const Utils = {
@@ -174,9 +171,6 @@ const Utils = {
        return signal + value
     }
 }
-
-
-
 
 const Form = {
 
@@ -268,14 +262,14 @@ const Form = {
 
 }
 
-
 const App = {
     init(){
 
-        Transaction.all.forEach(transaction => {
-            DOM.addTransaction(transaction) 
+        Transaction.all.forEach((transaction,index) => {
+            DOM.addTransaction(transaction,index)
         })
-        
+
+
         DOM.updateBalance()
     },
 
