@@ -11,36 +11,24 @@ const Modal = {
     }
 }
 
+
+const Storage = {
+
+    get(){
+        return JSON.parse(localStorage.getItem("dev.finances:transactions")) || []
+    },
+
+    set(transactions){
+        localStorage.setItem("dev.finance:transactions", JSON.stringify(transactions))
+    }
+}
+
+
 // Eu preciso pegar as minhas transaçoes do meu 
 // objeto aqui no javascript
 // e jogar no meu html
 
-const transactions = [
-    {  
 
-        description: 'Luz',
-        amount:-5000,
-        date: '23/01/2021'        
-    },
-    { 
-        
-        description: 'Website',
-        amount: 500000,
-        date: '23/01/2021'        
-    },  
-    { 
-      
-        description: 'Internet',
-        amount:-20000,
-        date: '23/01/2021'        
-    },
-    { 
-        
-        description: 'App',
-        amount:   20000,
-        date: '30/01/2021'        
-    },
-]
 
 // Eu preciso somar as entradas
 // depois eu preciso somar as saidas e
@@ -48,11 +36,10 @@ const transactions = [
 // assim, eu terei o total
 
 const Transaction = {
-    all : transactions,
+    all : Storage.get(),
 
-    add(transaction){
+    add(transaction){         
         Transaction.all.push(transaction)
-
         App.reload()
     },
 
@@ -262,6 +249,9 @@ const Form = {
 
 }
 
+
+
+
 const App = {
     init(){
 
@@ -271,8 +261,10 @@ const App = {
 
 
         DOM.updateBalance()
-    },
 
+        Storage.set(Transaction.all)
+    },
+ 
     reload(){
         DOM.clearTransactions()
         App.init()
